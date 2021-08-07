@@ -137,6 +137,16 @@ fi
 case "$soc_id" in
         "355" | "369" | "377" | "380" | "384" )
 
+    # Core control parameters on silver
+    echo 0 0 0 0 1 1 > /sys/devices/system/cpu/cpu0/core_ctl/not_preferred
+    echo 4 > /sys/devices/system/cpu/cpu0/core_ctl/min_cpus
+    echo 60 > /sys/devices/system/cpu/cpu0/core_ctl/busy_up_thres
+    echo 40 > /sys/devices/system/cpu/cpu0/core_ctl/busy_down_thres
+    echo 100 > /sys/devices/system/cpu/cpu0/core_ctl/offline_delay_ms
+    echo 0 > /sys/devices/system/cpu/cpu0/core_ctl/is_big_cluster
+    echo 8 > /sys/devices/system/cpu/cpu0/core_ctl/task_thres
+    echo 0 > /sys/devices/system/cpu/cpu6/core_ctl/enable
+
     # default sched up and down migrate values are 100 and 95
     echo 85 > /proc/sys/kernel/sched_group_downmigrate
     echo 100 > /proc/sys/kernel/sched_group_upmigrate
@@ -241,11 +251,6 @@ case "$soc_id" in
     echo -6 >  /sys/devices/system/cpu/cpu6/sched_load_boost
     echo -6 >  /sys/devices/system/cpu/cpu7/sched_load_boost
 
-    # Configure default schedTune value for foreground/top-app
-    echo 1 > /dev/stune/foreground/schedtune.prefer_idle
-    echo 1 > /dev/stune/top-app/schedtune.boost
-    echo 1 > /dev/stune/top-app/schedtune.prefer_idle
-
     # Set Memory parameters
     configure_memory_parameters
 
@@ -326,17 +331,7 @@ case "$soc_id" in
 
     # Turn off scheduler boost at the end
     echo 0 > /proc/sys/kernel/sched_boost
-
-    # Enable idle state listener
-    echo 1 > /sys/class/drm/card0/device/idle_encoder_mask
-    echo 100 > /sys/class/drm/card0/device/idle_timeout_ms
     ;;
 esac
-
-# Enable EAS
-echo 1 > /proc/sys/kernel/sched_energy_aware
-
-# Enable PowerHAL hint processing
-setprop vendor.powerhal.init 1
 
 setprop vendor.post_boot.parsed 1
