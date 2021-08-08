@@ -19,6 +19,9 @@ persist.camera.*                   u:object_r:vendor_camera_prop:s0
 # Display
 ro.vendor.display.type             u:object_r:vendor_display_prop:s0
 
+# Dolby
+persist.vendor.dolby.loglevel      u:object_r:vendor_dolby_loglevel_prop:s0
+
 # Elliptic ultrasound proximity
 elliptic.ultrasound.               u:object_r:vendor_sensors_prop:s0
 invn.hal                           u:object_r:vendor_sensors_prop:s0
